@@ -1,0 +1,28 @@
+[project]
+name = "calendar-ics-indexer"
+version = "0.1.0"
+description = "Index calendar events from ICS files and ZIP archives to JSONL"
+authors = [
+    {name = "Dustin Oprea", email = "myselfasunder@gmail.com"}
+]
+requires-python = ">=3.11"
+dependencies = [
+    "icalendar>=6.0.0,<7.0.0",
+    "python-dateutil>=2.8.0,<3.0.0",
+    "tqdm>=4.66.0,<5.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.0.0,<10.0.0",
+]
+
+[project.scripts]
+cii_ingest = "calendar_ics_indexer.entrypoint.cii_ingest:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

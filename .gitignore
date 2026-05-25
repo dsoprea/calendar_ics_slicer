@@ -1,0 +1,5 @@
+/src/calendar_ics_indexer.egg-info/
+
+__pycache__/
+
+/.python-version
