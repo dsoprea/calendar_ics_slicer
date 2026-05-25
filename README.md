@@ -1,4 +1,4 @@
-# calendar_slicer
+# Overview
 
 Translate calendar events from ICS files and ZIP archives of ICS files to flat JSONL data.
 
@@ -6,11 +6,11 @@ Each output record contains the event name, calendar name, and ISO 8601 start/st
 
 This was created in order to take the blobs of calendar data that Google Calendar exports, flatten them to a simple list of events, and slice by certain ranges of time.
 
-## Requirements
+# Requirements
 
 - Python 3.11+
 
-## Installation
+# Installation
 
 ```bash
 python -m venv .venv
@@ -23,7 +23,7 @@ For development (includes pytest):
 .venv/bin/pip install -e ".[dev]"
 ```
 
-## Usage
+# Usage
 
 Ingest one ICS file and print JSONL to stdout:
 
@@ -49,7 +49,7 @@ cis_ingest calendars.zip \
 
 Progress is reported on stderr (one step per ICS file) so stdout stays clean JSONL when writing to a pipe or redirect.
 
-## CLI options
+# CLI options
 
 | Option | Description |
 | --- | --- |
@@ -61,7 +61,7 @@ Progress is reported on stderr (one step per ICS file) so stdout stays clean JSO
 
 When both `--maximum-age` and `--earliest-timestamp` are set, the later cutoff applies.
 
-### `--maximum-age` phrases
+## `--maximum-age` phrases
 
 Use a count and unit, for example:
 
@@ -72,7 +72,7 @@ Use a count and unit, for example:
 
 Supported units include seconds, minutes, hours, days, weeks, months, and years.
 
-## Output format
+# Output format
 
 Each line is one JSON object:
 
@@ -89,7 +89,7 @@ Each line is one JSON object:
 
 Time filters apply to `start_timestamp`.
 
-## Development
+# Development
 
 Run tests:
 
