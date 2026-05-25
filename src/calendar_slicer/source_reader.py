@@ -4,7 +4,7 @@ import logging
 import os
 import zipfile
 
-import calendar_ics_indexer.ics_parser
+import calendar_slicer.ics_parser
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -125,7 +125,7 @@ def iter_event_records(input_path, source_progress_callback=None):
                 folder_name = _folder_name_for_member(member_name)
                 ics_basename = _basename_for_member(member_name)
                 ics_bytes = _read_member_bytes(archive, member_name)
-                records = calendar_ics_indexer.ics_parser.parse_ics_bytes(
+                records = calendar_slicer.ics_parser.parse_ics_bytes(
                     ics_bytes,
                     folder_name,
                     ics_basename,
@@ -142,7 +142,7 @@ def iter_event_records(input_path, source_progress_callback=None):
         folder_name = _folder_name_for_file_path(input_path)
         ics_basename = _basename_for_file_path(input_path)
         ics_bytes = _read_file_bytes(input_path)
-        records = calendar_ics_indexer.ics_parser.parse_ics_bytes(
+        records = calendar_slicer.ics_parser.parse_ics_bytes(
             ics_bytes,
             folder_name,
             ics_basename,

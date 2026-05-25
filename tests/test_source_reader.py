@@ -5,7 +5,7 @@ import os
 import tempfile
 import zipfile
 
-import calendar_ics_indexer.source_reader
+import calendar_slicer.source_reader
 
 SAMPLE_ICS = """\
 BEGIN:VCALENDAR
@@ -30,7 +30,7 @@ def test_iter_event_records_reads_single_ics_file():
         with open(ics_path, "w", encoding="utf-8") as output_stream:
             output_stream.write(SAMPLE_ICS)
 
-        records = list(calendar_ics_indexer.source_reader.iter_event_records(ics_path))
+        records = list(calendar_slicer.source_reader.iter_event_records(ics_path))
 
     assert len(records) == 1
     assert records[0]["name"] == "Zip Meeting"
@@ -50,7 +50,7 @@ def test_iter_event_records_reads_ics_files_inside_zip():
         with open(zip_path, "wb") as output_stream:
             output_stream.write(buffer.getvalue())
 
-        records = list(calendar_ics_indexer.source_reader.iter_event_records(zip_path))
+        records = list(calendar_slicer.source_reader.iter_event_records(zip_path))
 
     assert len(records) == 2
     assert records[0]["name"] == "Zip Meeting"
@@ -71,7 +71,7 @@ def test_count_ics_source_files_counts_zip_members():
         with open(zip_path, "wb") as output_stream:
             output_stream.write(buffer.getvalue())
 
-        source_file_count = calendar_ics_indexer.source_reader.count_ics_source_files(zip_path)
+        source_file_count = calendar_slicer.source_reader.count_ics_source_files(zip_path)
 
     assert source_file_count == 2
 
@@ -84,7 +84,7 @@ def test_count_ics_source_files_counts_single_ics_file():
         with open(ics_path, "w", encoding="utf-8") as output_stream:
             output_stream.write(SAMPLE_ICS)
 
-        source_file_count = calendar_ics_indexer.source_reader.count_ics_source_files(ics_path)
+        source_file_count = calendar_slicer.source_reader.count_ics_source_files(ics_path)
 
     assert source_file_count == 1
 
@@ -104,7 +104,7 @@ def test_iter_event_records_invokes_source_progress_callback_per_file():
         with open(zip_path, "wb") as output_stream:
             output_stream.write(buffer.getvalue())
 
-        records = list(calendar_ics_indexer.source_reader.iter_event_records(
+        records = list(calendar_slicer.source_reader.iter_event_records(
             zip_path,
             source_progress_callback=progress_updates.append,
         ))

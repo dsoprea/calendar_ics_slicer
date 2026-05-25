@@ -1,4 +1,4 @@
-# calendar_ics_indexer
+# calendar_slicer
 
 Extract calendar events from ICS files and ZIP archives into JSON Lines (JSONL).
 
@@ -100,7 +100,7 @@ Run tests:
 Project layout:
 
 ```
-src/calendar_ics_indexer/
+src/calendar_slicer/
   ics_parser.py          # ICS parsing
   source_reader.py       # .ics and .zip input
   event_filter.py        # time window filtering

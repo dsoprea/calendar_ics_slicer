@@ -2,13 +2,13 @@
 
 import datetime
 
-import calendar_ics_indexer.timestamp_utility
+import calendar_slicer.timestamp_utility
 
 
 def test_parse_iso8601_timestamp_parses_utc_datetime():
     """UTC datetimes parse with timezone attached."""
 
-    parsed = calendar_ics_indexer.timestamp_utility.parse_iso8601_timestamp(
+    parsed = calendar_slicer.timestamp_utility.parse_iso8601_timestamp(
         "2025-06-01T12:00:00+00:00",
     )
 
@@ -18,7 +18,7 @@ def test_parse_iso8601_timestamp_parses_utc_datetime():
 def test_parse_iso8601_timestamp_assigns_utc_to_naive_values():
     """Naive timestamps are treated as UTC."""
 
-    parsed = calendar_ics_indexer.timestamp_utility.parse_iso8601_timestamp(
+    parsed = calendar_slicer.timestamp_utility.parse_iso8601_timestamp(
         "2025-06-01T12:00:00",
     )
 

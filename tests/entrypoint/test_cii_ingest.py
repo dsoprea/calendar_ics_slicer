@@ -6,7 +6,7 @@ import os
 import tempfile
 import zipfile
 
-import calendar_ics_indexer.entrypoint.cii_ingest
+import calendar_slicer.entrypoint.cii_ingest
 
 SAMPLE_ICS = """\
 BEGIN:VCALENDAR
@@ -39,7 +39,7 @@ def test_main_writes_jsonl_to_output_file():
         with open(ics_path, "w", encoding="utf-8") as output_stream:
             output_stream.write(SAMPLE_ICS)
 
-        calendar_ics_indexer.entrypoint.cii_ingest.main([
+        calendar_slicer.entrypoint.cii_ingest.main([
             ics_path,
             "--output",
             output_path,
@@ -70,7 +70,7 @@ def test_main_reads_zip_archive():
         with open(zip_path, "wb") as output_stream:
             output_stream.write(buffer.getvalue())
 
-        calendar_ics_indexer.entrypoint.cii_ingest.main([
+        calendar_slicer.entrypoint.cii_ingest.main([
             zip_path,
             "--output",
             output_path,
@@ -94,7 +94,7 @@ def test_main_filters_events_by_earliest_timestamp():
         with open(ics_path, "w", encoding="utf-8") as output_stream:
             output_stream.write(SAMPLE_ICS)
 
-        calendar_ics_indexer.entrypoint.cii_ingest.main([
+        calendar_slicer.entrypoint.cii_ingest.main([
             ics_path,
             "--output",
             output_path,

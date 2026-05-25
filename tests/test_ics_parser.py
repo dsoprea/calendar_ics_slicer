@@ -1,6 +1,6 @@
 """Tests for ICS parsing."""
 
-import calendar_ics_indexer.ics_parser
+import calendar_slicer.ics_parser
 
 SAMPLE_ICS = """\
 BEGIN:VCALENDAR
@@ -25,7 +25,7 @@ END:VCALENDAR
 def test_parse_ics_bytes_uses_calendar_property_and_event_fields():
     """Parsed records expose name, calendar, and ISO 8601 timestamps."""
 
-    records = list(calendar_ics_indexer.ics_parser.parse_ics_bytes(
+    records = list(calendar_slicer.ics_parser.parse_ics_bytes(
         SAMPLE_ICS.encode("utf-8"),
         "",
         "ignored.ics",
@@ -61,7 +61,7 @@ END:VEVENT
 END:VCALENDAR
 """
 
-    records = list(calendar_ics_indexer.ics_parser.parse_ics_bytes(
+    records = list(calendar_slicer.ics_parser.parse_ics_bytes(
         ics_without_calendar_name.encode("utf-8"),
         "Personal",
         "events.ics",

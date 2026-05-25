@@ -8,10 +8,10 @@ import zipfile
 
 import tqdm
 
-import calendar_ics_indexer.config.entrypoint.cii_ingest
-import calendar_ics_indexer.event_filter
-import calendar_ics_indexer.jsonl_writer
-import calendar_ics_indexer.source_reader
+import calendar_slicer.config.entrypoint.cii_ingest
+import calendar_slicer.event_filter
+import calendar_slicer.jsonl_writer
+import calendar_slicer.source_reader
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -20,8 +20,8 @@ def main(argv=None):
     """Parse arguments, ingest calendar sources, and write JSONL output."""
 
     parser = argparse.ArgumentParser(
-        prog=calendar_ics_indexer.config.entrypoint.cii_ingest.PROG,
-        description=calendar_ics_indexer.config.entrypoint.cii_ingest.DESCRIPTION,
+        prog=calendar_slicer.config.entrypoint.cii_ingest.PROG,
+        description=calendar_slicer.config.entrypoint.cii_ingest.DESCRIPTION,
     )
     parser.add_argument(
         "input_path",
@@ -62,7 +62,7 @@ def main(argv=None):
         sys.exit(1)
 
     try:
-        ics_source_file_count = calendar_ics_indexer.source_reader.count_ics_source_files(input_path)
+        ics_source_file_count = calendar_slicer.source_reader.count_ics_source_files(input_path)
     except (OSError, ValueError, zipfile.BadZipFile) as error:
         message = "failed to count ICS sources: {error}".format(error=error)
         _LOGGER.error(message)
@@ -70,7 +70,7 @@ def main(argv=None):
 
     # Build optional start timestamp bounds before streaming records.
     try:
-        earliest_inclusive, latest_inclusive = calendar_ics_indexer.event_filter.build_event_time_bounds(
+        earliest_inclusive, latest_inclusive = calendar_slicer.event_filter.build_event_time_bounds(
             maximum_age_phrase=args.maximum_age_phrase,
             earliest_timestamp_text=args.earliest_timestamp_text,
             latest_timestamp_text=args.latest_timestamp_text,
@@ -83,12 +83,12 @@ def main(argv=None):
     # Track ingest progress on stderr so stdout stays JSONL-only.
     with tqdm.tqdm(
         total=ics_source_file_count,
-        desc=calendar_ics_indexer.config.entrypoint.cii_ingest.PROGRESS_DESCRIPTION,
-        unit=calendar_ics_indexer.config.entrypoint.cii_ingest.PROGRESS_UNIT,
+        desc=calendar_slicer.config.entrypoint.cii_ingest.PROGRESS_DESCRIPTION,
+        unit=calendar_slicer.config.entrypoint.cii_ingest.PROGRESS_UNIT,
         file=sys.stderr,
     ) as progress_bar:
         try:
-            records = calendar_ics_indexer.source_reader.iter_event_records(
+            records = calendar_slicer.source_reader.iter_event_records(
                 input_path,
                 source_progress_callback=progress_bar.update,
             )
@@ -97,7 +97,7 @@ def main(argv=None):
             _LOGGER.error(message)
             sys.exit(1)
 
-        filtered_records = calendar_ics_indexer.event_filter.iter_matching_event_records(
+        filtered_records = calendar_slicer.event_filter.iter_matching_event_records(
             records,
             earliest_inclusive=earliest_inclusive,
             latest_inclusive=latest_inclusive,
@@ -110,6 +110,6 @@ def main(argv=None):
                 os.makedirs(output_directory, exist_ok=True)
 
             with open(args.output_path, "w", encoding="utf-8") as output_stream:
-                calendar_ics_indexer.jsonl_writer.write_jsonl(filtered_records, output_stream)
+                calendar_slicer.jsonl_writer.write_jsonl(filtered_records, output_stream)
         else:
-            calendar_ics_indexer.jsonl_writer.write_jsonl(filtered_records, sys.stdout)
+            calendar_slicer.jsonl_writer.write_jsonl(filtered_records, sys.stdout)
