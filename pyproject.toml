@@ -1,7 +1,7 @@
 [project]
-name = "calendar-ics-slicer"
+name = "calendar_ics_slicer"
 version = "0.1.0"
-description = "Index calendar events from ICS files and ZIP archives to JSONL"
+description = "Translate calendar events from ICS files and ZIP archives of ICS files to flat JSONL data"
 authors = [
     {name = "Dustin Oprea", email = "myselfasunder@gmail.com"}
 ]

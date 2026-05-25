@@ -1,10 +1,10 @@
 # calendar_slicer
 
-Extract calendar events from ICS files and ZIP archives into JSON Lines (JSONL).
+Translate calendar events from ICS files and ZIP archives of ICS files to flat JSONL data.
 
 Each output record contains the event name, calendar name, and ISO 8601 start/stop timestamps. The `cii_ingest` CLI accepts a single `.ics` file or a `.zip` archive containing nested folders and `.ics` files.
 
-This was created in order to take the blobs of calendars and events that Google Calendar exports, flatten to a simple list of events, and slice by certain ranges of time.
+This was created in order to take the blobs of calendar data that Google Calendar exports, flatten them to a simple list of events, and slice by certain ranges of time.
 
 ## Requirements
 
