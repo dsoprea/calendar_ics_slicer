@@ -2,7 +2,7 @@
 
 Translate calendar events from ICS files and ZIP archives of ICS files to flat JSONL data.
 
-Each output record contains the event name, calendar name, and ISO 8601 start/stop timestamps. The `cii_ingest` CLI accepts a single `.ics` file or a `.zip` archive containing nested folders and `.ics` files.
+Each output record contains the event name, calendar name, and ISO 8601 start/stop timestamps. The `cis_ingest` CLI accepts a single `.ics` file or a `.zip` archive containing nested folders and `.ics` files.
 
 This was created in order to take the blobs of calendar data that Google Calendar exports, flatten them to a simple list of events, and slice by certain ranges of time.
 
@@ -28,19 +28,19 @@ For development (includes pytest):
 Ingest one ICS file and print JSONL to stdout:
 
 ```bash
-cii_ingest /path/to/calendar.ics
+cis_ingest /path/to/calendar.ics
 ```
 
 Ingest a ZIP archive and write JSONL to a file:
 
 ```bash
-cii_ingest /path/to/calendars.zip --output events.jsonl
+cis_ingest /path/to/calendars.zip --output events.jsonl
 ```
 
 Filter events by time window:
 
 ```bash
-cii_ingest calendars.zip \
+cis_ingest calendars.zip \
   --maximum-age "10 weeks" \
   --earliest-timestamp "2025-01-01T00:00:00+00:00" \
   --latest-timestamp "2026-12-31T23:59:59+00:00" \
@@ -107,6 +107,6 @@ src/calendar_slicer/
   time_phrase.py         # interval phrase parsing
   timestamp_utility.py   # ISO 8601 parsing
   jsonl_writer.py        # JSONL output
-  entrypoint/cii_ingest.py
+  entrypoint/cis_ingest.py
 tests/
 ```

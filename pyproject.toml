@@ -18,7 +18,7 @@ dev = [
 ]
 
 [project.scripts]
-cii_ingest = "calendar_slicer.entrypoint.cii_ingest:main"
+cis_ingest = "calendar_slicer.entrypoint.cis_ingest:main"
 
 [build-system]
 requires = ["setuptools>=61.0"]

@@ -8,7 +8,7 @@ import zipfile
 
 import tqdm
 
-import calendar_slicer.config.entrypoint.cii_ingest
+import calendar_slicer.config.entrypoint.cis_ingest
 import calendar_slicer.event_filter
 import calendar_slicer.jsonl_writer
 import calendar_slicer.source_reader
@@ -20,8 +20,8 @@ def main(argv=None):
     """Parse arguments, ingest calendar sources, and write JSONL output."""
 
     parser = argparse.ArgumentParser(
-        prog=calendar_slicer.config.entrypoint.cii_ingest.PROG,
-        description=calendar_slicer.config.entrypoint.cii_ingest.DESCRIPTION,
+        prog=calendar_slicer.config.entrypoint.cis_ingest.PROG,
+        description=calendar_slicer.config.entrypoint.cis_ingest.DESCRIPTION,
     )
     parser.add_argument(
         "input_path",
@@ -83,8 +83,8 @@ def main(argv=None):
     # Track ingest progress on stderr so stdout stays JSONL-only.
     with tqdm.tqdm(
         total=ics_source_file_count,
-        desc=calendar_slicer.config.entrypoint.cii_ingest.PROGRESS_DESCRIPTION,
-        unit=calendar_slicer.config.entrypoint.cii_ingest.PROGRESS_UNIT,
+        desc=calendar_slicer.config.entrypoint.cis_ingest.PROGRESS_DESCRIPTION,
+        unit=calendar_slicer.config.entrypoint.cis_ingest.PROGRESS_UNIT,
         file=sys.stderr,
     ) as progress_bar:
         try:
