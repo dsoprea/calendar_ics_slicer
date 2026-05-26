@@ -11,3 +11,18 @@ def parse_iso8601_timestamp(timestamp_text):
         parsed = parsed.replace(tzinfo=datetime.timezone.utc)
 
     return parsed
+
+
+def get_local_timezone():
+    """Return the system local timezone."""
+
+    return datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo
+
+
+def convert_iso8601_timestamp_to_timezone(timestamp_text, target_timezone):
+    """Parse timestamp_text and return it in target_timezone."""
+
+    parsed = parse_iso8601_timestamp(timestamp_text)
+    converted = parsed.astimezone(target_timezone)
+
+    return converted

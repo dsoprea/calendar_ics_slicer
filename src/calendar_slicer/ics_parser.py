@@ -68,6 +68,19 @@ def _read_event_summary(event_component):
     return str(event_component["SUMMARY"])
 
 
+def _read_event_id(event_component):
+    """Return the event UID string, or None when absent or empty."""
+
+    if "UID" not in event_component:
+        return None
+
+    event_id = str(event_component["UID"])
+    if not event_id:
+        return None
+
+    return event_id
+
+
 def _read_event_start(event_component):
     """Return the DTSTART value for an event, or None when absent."""
 
@@ -111,10 +124,23 @@ def _build_event_record(calendar_name, event_component):
     if start_instant is None:
         return None
 
+    # Reject events that lack a usable UID.
+    event_id = _read_event_id(event_component)
+    if event_id is None:
+        summary = _read_event_summary(event_component)
+        message = "skipping event without UID: calendar={calendar_name} summary={summary}".format(
+            calendar_name=calendar_name,
+            summary=summary,
+        )
+        _LOGGER.error(message)
+
+        return None
+
     stop_instant = _read_event_stop(event_component, start_instant)
     summary = _read_event_summary(event_component)
 
     record = {
+        "event_id": event_id,
         "name": summary,
         "calendar": calendar_name,
         "start_timestamp": _instant_to_iso8601(start_instant),

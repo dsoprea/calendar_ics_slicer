@@ -9,6 +9,7 @@ import zipfile
 import tqdm
 
 import calendar_slicer.config.entrypoint.cis_ingest
+import calendar_slicer.event_bin_writer
 import calendar_slicer.event_filter
 import calendar_slicer.jsonl_writer
 import calendar_slicer.source_reader
@@ -34,6 +35,12 @@ def main(argv=None):
         help="Write JSONL to FILE instead of stdout.",
     )
     parser.add_argument(
+        "--output-bin-path",
+        dest="output_bin_path",
+        metavar="PATH",
+        help="Write each event as JSON under PATH, grouped by local start year.",
+    )
+    parser.add_argument(
         "--maximum-age",
         dest="maximum_age_phrase",
         metavar="PHRASE",
@@ -53,6 +60,14 @@ def main(argv=None):
     )
 
     args = parser.parse_args(argv)
+
+    # Configure process logging before ingesting sources.
+    logging.basicConfig(
+        level=getattr(
+            logging,
+            calendar_slicer.config.entrypoint.cis_ingest.DEFAULT_LOG_LEVEL,
+        ),
+    )
 
     # Resolve the input path and collect event records.
     input_path = os.path.abspath(args.input_path)
@@ -103,8 +118,26 @@ def main(argv=None):
             latest_inclusive=latest_inclusive,
         )
 
-        # Write JSONL to the requested output destination.
-        if args.output_path:
+        # Write JSONL and optional binned JSON output.
+        if args.output_bin_path:
+            jsonl_output_stream = sys.stdout
+            if args.output_path:
+                output_directory = os.path.dirname(os.path.abspath(args.output_path))
+                if output_directory:
+                    os.makedirs(output_directory, exist_ok=True)
+
+                jsonl_output_stream = open(args.output_path, "w", encoding="utf-8")
+
+            try:
+                calendar_slicer.event_bin_writer.write_events(
+                    filtered_records,
+                    args.output_bin_path,
+                    jsonl_output_stream=jsonl_output_stream,
+                )
+            finally:
+                if args.output_path:
+                    jsonl_output_stream.close()
+        elif args.output_path:
             output_directory = os.path.dirname(os.path.abspath(args.output_path))
             if output_directory:
                 os.makedirs(output_directory, exist_ok=True)
